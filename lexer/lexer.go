@@ -48,6 +48,8 @@ func (l *Lexer) readChar() {
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
+	l.skipWhitespace()
+
 	switch l.ch {
 	case '=':
 		tok = newToken(token.ASSIGN, l.ch)
@@ -68,10 +70,30 @@ func (l *Lexer) NextToken() token.Token {
 	case 0:
 		tok.Type = token.EOF
 		tok.Literal = ""
+	default:
+		// 위에 조건을 충족하지 않으면 식별자로 보겠다.
+		if isLetter(l.ch) {
+			tok.Literal = l.readIdentifier()
+			tok.Type = token.LookupIdent(tok.Literal)
+			return tok // 여기서 early exist를 해줘야 할까? (아직 이유를 모르겠다.)
+		} else if isDigit(l.ch) {
+			tok.Type = token.INT
+			tok.Literal = l.readNumber()
+			return tok // 여기서 early exist를 해줘야 할까? (아직 이유를 모르겠다.)
+		} else {
+			tok = newToken(token.ILLEGAL, l.ch)
+		}
 	}
 
 	l.readChar()
 	return tok
+}
+
+// skipWhitespace 함수는 렉서가 처리할 필요가 없는 문자를 생략하여 넘깁니다.
+func (l *Lexer) skipWhitespace() {
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
+		l.readChar()
+	}
 }
 
 // newToken 함수는 tokenType과 ch를 기반으로 monkey/token.Token을 생성하여 반환합니다.
@@ -82,4 +104,40 @@ func newToken(tokenType token.TokenType, ch byte) token.Token {
 	}
 
 	return tok
+}
+
+// readIdentifier 함수는 문자열을 추출합니다.
+// 단 이 함수가 동작하기 위해서는 position이 isLetter()에 충족되는 문자를 가리키고 있어야 합니다.
+func (l *Lexer) readIdentifier() string {
+	startPosition := l.position
+	for isLetter(l.ch) {
+		l.readChar()
+	}
+
+	return l.input[startPosition:l.position]
+}
+
+// isLetter 함수는 문자인지 아닌지 검사하여 참, 거짓을 반환합니다.
+// monkey 언어에서의 문자의 조건은 다음과 같습니다.
+// 'a' ~ 'z' || 'A' ~ 'Z' || ch == '_'
+func isLetter(ch byte) bool {
+	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
+}
+
+// readNumber 함수는 숫자를 추출합니다.
+// 단 이 함수가 동작하기 위해서는 position이 isDigit()에 충족되는 문자를 가리키고 있어야 합니다.
+func (l *Lexer) readNumber() string {
+	startPosition := l.position
+	for isDigit(l.ch) {
+		l.readChar()
+	}
+
+	return l.input[startPosition:l.position]
+}
+
+// isDigit 함수는 숫자인지 아닌지 검하여 참, 거짓을 반환합니다.
+// monkey 언어에서의 숫자의 조건은 다음과 같습니다.
+// '0' ~ '9'
+func isDigit(ch byte) bool {
+	return '0' <= ch && ch <= '9'
 }
