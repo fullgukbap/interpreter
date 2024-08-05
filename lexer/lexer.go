@@ -9,7 +9,7 @@ type Lexer struct {
 	ch           byte   // 현재 문자, ch의 타입이 byte이므로 ASCII만 지원한다. 만약 한글과 같은 언어를 지원하고 한다면 RUNE 타입을 사용하자
 }
 
-// New 함수는 input(source code)을 기반으로 생성한 lexer의 주소값을 반환합니다.
+// New 함수는 input(source code)을 기반으로 생성된 lexer의 주소값을 반환합니다.
 func New(input string) *Lexer {
 	lexer := Lexer{
 		input:        input,
