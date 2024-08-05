@@ -1,75 +1,37 @@
-// Package token은 토큰들과 식별자를 구현합니다.
-// 토큰을 분석하는 행위는 token 패키지에서 행하지 않습니다.
 package token
 
-// TokenType은 string 타입과 매핑됩니다.
-// TokenType을 string으로 함으로써 Token들을 쉽게 다를 수 있습니다.
 type TokenType string
-
-// 아래에서는 토큰을 상수로 선언한 것을 알수 있습니다.
-const (
-	// ILLEGAL은 불법적인 이라는 뜻으로 에러가 발생했을 나타내는 상수 입니다.
-	ILLEGAL = "ILLEGAL"
-
-	// EOF는 소스코드의 끝을 나타내는 상수 입니다.
-	EOF = "EOF"
-
-	// IDENT는 식별자로 사용되는 상수 입니다.
-	// 예로는 변수의 이름, 상수싀 이름이 있습니다.
-	IDENT = "IDENT"
-	INT   = "INT"
-
-	// Operators
-	ASSIGN   = "="
-	PLUS     = "+"
-	MINUS    = "-"
-	BANG     = "!"
-	ASTERISK = "*"
-	SLASH    = "/"
-
-	LT = "<"
-	GT = ">"
-
-	EQ     = "=="
-	NOT_EQ = "!="
-
-	// Delimiters
-	COMMA     = ","
-	SEMICOLON = ";"
-
-	LPAREN = "("
-	RPAREN = ")"
-	LBRACE = "{"
-	RBRACE = "}"
-
-	// Keywords
-	FUNCTION = "FUNCTION"
-	LET      = "LET"
-	TRUE     = "TRUE"
-	FALSE    = "FALSE"
-	IF       = "IF"
-	ELSE     = "ELSE"
-	RETURN   = "RETURN"
-)
 
 type Token struct {
 	Type    TokenType
 	Literal string
 }
 
-var keywords = map[string]TokenType{
-	"fn":     FUNCTION,
-	"let":    LET,
-	"true":   TRUE,
-	"false":  FALSE,
-	"if":     IF,
-	"else":   ELSE,
-	"return": RETURN,
-}
+// TokenTypes
+const (
+	// 부가 표현 요소
+	ILLEGAL = "ILLEGAL" // 어떤 토큰이나 문자를 렉서가 알 수 없을떄 사용하는 타입
+	EOF     = "EOF"     // 파일의 끝을 표현하는 타입 (파서에게 이제 그만 멈춰도 돼 라는 용도로 사용된다.)
 
-func LookupIdent(ident string) TokenType {
-	if tok, ok := keywords[ident]; ok {
-		return tok
-	}
-	return IDENT
-}
+	// 식별자
+	IDENT = "IDENT"
+	INT   = "INT"
+
+	// 연산자
+	ASSIGN = "="
+	PLUS   = "+"
+
+	// 구분자
+	COMMA     = ","
+	SEMICOLON = ";"
+
+	LPAREN = "("
+	RPAREN = ")"
+
+	LBRACE = "{"
+	RBRACE = "}"
+
+	// 예약어
+	FUNCTION = "FUNCTION"
+	LET      = "LET"
+)

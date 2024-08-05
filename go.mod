@@ -1,3 +1,3 @@
-module monkey-lang-clone
+module interpreter
 
-go 1.21.0
+go 1.22.5
