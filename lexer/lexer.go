@@ -55,6 +55,14 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.ASSIGN, l.ch)
 	case '+':
 		tok = newToken(token.PLUS, l.ch)
+	case '-':
+		tok = newToken(token.MINUS, l.ch)
+	case '*':
+		tok = newToken(token.ASTERISK, l.ch)
+	case '/':
+		tok = newToken(token.SLASH, l.ch)
+	case '!':
+		tok = newToken(token.BANG, l.ch)
 	case ',':
 		tok = newToken(token.COMMA, l.ch)
 	case ';':
@@ -67,6 +75,10 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.LBRACE, l.ch)
 	case '}':
 		tok = newToken(token.RBRACE, l.ch)
+	case '<':
+		tok = newToken(token.LT, l.ch)
+	case '>':
+		tok = newToken(token.RT, l.ch)
 	case 0:
 		tok.Type = token.EOF
 		tok.Literal = ""
@@ -126,6 +138,7 @@ func isLetter(ch byte) bool {
 
 // readNumber 함수는 숫자를 추출합니다.
 // 단 이 함수가 동작하기 위해서는 position이 isDigit()에 충족되는 문자를 가리키고 있어야 합니다.
+// 본 함수는 오직 10진수만 받아들일 수 있도록 코딩되었다.
 func (l *Lexer) readNumber() string {
 	startPosition := l.position
 	for isDigit(l.ch) {

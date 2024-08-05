@@ -25,8 +25,12 @@ const (
 	INT = "INT"
 
 	// 연산자
-	ASSIGN = "="
-	PLUS   = "+"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	ASTERISK = "*"
+	SLASH    = "/"
+	BANG     = "!"
 
 	// 구분자
 	COMMA     = ","
@@ -37,6 +41,9 @@ const (
 
 	LBRACE = "{"
 	RBRACE = "}"
+
+	LT = "<"
+	RT = ">"
 
 	// 예약어
 	FUNCTION = "FUNCTION"

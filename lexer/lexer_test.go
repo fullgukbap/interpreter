@@ -96,6 +96,25 @@ func TestNextToken(t *testing.T) {
 				{token.EOF, ""},
 			},
 		},
+
+		// case 3
+		{
+			"NextToken(3)",
+
+			`!-/*<5>;`,
+
+			[]expectedToken{
+				{token.BANG, "!"},
+				{token.MINUS, "-"},
+				{token.SLASH, "/"},
+				{token.ASTERISK, "*"},
+				{token.LT, "<"},
+				{token.INT, "5"},
+				{token.RT, ">"},
+				{token.SEMICOLON, ";"},
+				{token.EOF, ""},
+			},
+		},
 	}
 
 	for _, tc := range testCases {
