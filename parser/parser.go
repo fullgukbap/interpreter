@@ -62,6 +62,8 @@ func (p *Parser) parseStatement() ast.Statement {
 	// 'let' x = 5;
 	case token.LET:
 		return p.parseLetStatement()
+	case token.RETURN:
+		return p.parseReturnStatement()
 	default:
 		return nil
 	}
@@ -110,4 +112,19 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.peekError(t)
 		return false
 	}
+}
+
+func (p *Parser) parseReturnStatement() ast.Statement {
+	stmt := &ast.ReturnStatement{
+		Token: p.curToken,
+	}
+
+	p.nextToken()
+
+	// 아직 expression parsing 방법을 몰라서 아래 코드로 대체
+	for !p.curTokenIs(token.SEMICOLON) {
+		p.nextToken()
+	}
+
+	return stmt
 }
